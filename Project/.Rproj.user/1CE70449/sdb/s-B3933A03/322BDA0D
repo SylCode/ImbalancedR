@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(SDR);\ntraining = read.keel(\"DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat\");\ntest = read.keel(\"DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat\");\nnames(training)\nprint(training)\nlibrary(unbalanced)\n# konwersja wczytanych danych do macierzy\nmtrain <- t(simplify2array(training$data))\nmtest <- t(simplify2array(test$data))\nn <- ncol(mtrain)\n# wyciagniecie z danych klas\ntrain.input <- mtrain[ , -n]\ntrain.output <- mtrain[ , n]\ntest.output <- mtest[ , n]\ntest.input <- mtest[ , -n]\n# klasa mniejszosciowa jako wynik pozytywny\ntrain.output <- (train.output -1)*(-1)\ntest.output <- (test.output -1)*(-1)\ndata <- ubOver(X = train.input, Y = train.output) # ubUnder dziala podobnie\nlibrary(C50)\ntrain.output = as.factor(data$Y)\ntrain.input = as.data.frame(data$X)\n# model drzewa\ntreemodel <- C5.0(x = train.input, y = train.output)\nsummary(treemodel)\ntest.output <- as.factor(test.output)\ntest.input <- as.data.frame(test.input)\n# predykcja\nresult <- predict(treemodel, test.input)\n",
+    "created" : 1459352962571.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1454875195",
+    "id" : "322BDA0D",
+    "lastKnownWriteTime" : 1459354394,
+    "last_content_update" : 1459354394717,
+    "path" : "D:/Users/Никита/Desktop/Study/Semester III/ZMADM 2/Project/Project/Script.R",
+    "project_path" : "Script.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

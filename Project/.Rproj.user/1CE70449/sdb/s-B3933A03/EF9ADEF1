@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "install.packages(\"unbalanced\")\ninstall.packages(\"C50\")\nl = read.csv2(\"DataSets\\wisconsin-5-fold (IR 1.86)\\wisconsin-5-1tra.dat\")\nl = read.csv2(\"DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat\")\nl\ninstall.packages(\"SDR\")\nlibrary('sdr')\nlibrary(sdr)\nl = read.keel(\"DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat\")\nView(l)\nlibrary(SDR)\nl = read.keel(\"DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat\")\nr = read.keel(\"DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat\")\n",
+    "created" : 1459353133822.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3896197460",
+    "id" : "EF9ADEF1",
+    "lastKnownWriteTime" : 1459294714,
+    "last_content_update" : 1459294714,
+    "path" : "D:/Users/Никита/Desktop/Study/Semester III/ZMADM 2/Project/Project/.Rhistory",
+    "project_path" : ".Rhistory",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_history"
+}

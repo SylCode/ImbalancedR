@@ -1,0 +1,124 @@
+install.packages("unbalanced")
+install.packages("C50")
+l = read.csv2("DataSets\wisconsin-5-fold (IR 1.86)\wisconsin-5-1tra.dat")
+l = read.csv2("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat")
+l
+install.packages("SDR")
+library('sdr')
+library(sdr)
+l = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat")
+View(l)
+library(SDR)
+l = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat")
+r = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat")
+result <- predict(treemodel, test.input)
+library(SDR)
+training <- read.keel("/home/kamil/Data_Sets_Keep/wisconsin-5-fold\ (IR 1.86)//wisconsin-5-1tra.dat")
+library(SDR)
+training <- read.keel("/home/kamil/Data_Sets_Keep/wisconsin-5-fold\ (IR 1.86)//wisconsin-5-1tra.dat")
+library(SDR);
+training = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat");
+test = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat");
+names(training)
+print(training)
+library(unbalanced)
+mtrain <- t(simplify2array(training$data))
+mtest <- t(simplify2array(test$data))
+n <- ncol(mtrain)
+View(mtest)
+train.input <- mtrain[ , -n]
+train.output <- mtrain[ , n]
+test.output <- mtest[ , n]
+test.input <- mtest[ , -n]
+train.output <- (train.output -1)*(-1)
+test.output <- (test.output -1)*(-1)
+data <- ubOver(X = train.input, Y = train.output) # ubUnder dziala podobnie
+library(SDR);
+training = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat");
+test = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat");
+names(training)
+print(training)
+library(unbalanced)
+# konwersja wczytanych danych do macierzy
+mtrain <- t(simplify2array(training$data))
+mtest <- t(simplify2array(test$data))
+n <- ncol(mtrain)
+# wyciagniecie z danych klas
+train.input <- mtrain[ , -n]
+train.output <- mtrain[ , n]
+test.output <- mtest[ , n]
+# klasa mniejszosciowa jako wynik pozytywny
+train.output <- (train.output -1)*(-1)
+test.input <- mtest[ , -n]
+test.output <- (test.output -1)*(-1)
+data <- ubOver(X = train.input, Y = train.output) # ubUnder dziala podobnie
+library(C50)
+train.output = as.factor(data$Y)
+train.input = as.data.frame(data$X)
+# model drzewa
+treemodel <- C5.0(x = train.input, y = train.output)
+summary(treemodel)
+install.packages("SVM")
+install.packages("SVM")
+install.packages("kernlab")
+library(SDR)
+test = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tst.dat")
+n = ncol(test)
+mtest <- t(simplify2array(test$data))
+n = ncol(mtest)
+test.classnames = test$class_names
+View(mtest)
+test.vars = mtest[ , -n]
+as.matrix(test.vars)
+mds <- cmdscale(test.vars)
+pc <- princomp(test.vars[ ,1:n],cor=TRUE, scores = TRUE)
+pc <- princomp(test.vars,cor=TRUE, scores = TRUE)
+summary(pc)
+bigplot(pc)
+plot(pc, type="lines")
+biplot(pc)
+libraty(rgl)
+library(rgl)
+install.packages("rgl")
+library(rgl)
+plot3d(pc$scores[,1:4], col = test$atributeNames[-n])
+plot3d(pc$scores[,1:4])
+plot3d(pc$scores[,1:9], col=test$atributeNames[-n])
+plot3d(pc$scores[,1:9], col=["red","green"])
+plot3d(pc$scores[,1:9], col={"red","green"})
+plot3d(pc$scores[,1:9], col="red","green")
+plot3d(pc$scores[,1:9], col="red")
+plot3d(pc$scores[,1:9], col="red")
+plot3d(pc$scores[,1:2], test.classnames)
+plot3d(pc$scores[,-n], test.features)
+test.features = test$atributeNames[-n]
+plot3d(pc$scores[,-n], test.features)
+test.vars = mtest[ , -n]
+as.matrix(test.vars)
+(mds <- cmdscale(test.vars))
+plot3d(pc$scores[,-n], test.vars)
+test.dist <- as.dist(test.vars,method = "euclidian", diag = FALSE, upper = FALSE)
+test.dist <- as.dist(test.vars, diag = FALSE, upper = FALSE)
+test.dist <- as.dist(test.vars[-n,-n], diag = FALSE, upper = FALSE)
+test.vars = mtest[ , -n]
+(mds <- cmdscale(test.vars[-n,-n]))
+test.dist <- as.dist(test.vars)
+test.dist <- Dist(test.vars)
+test.dist <- as.Dist(test.vars)
+test.dist <- as.dist(mtest, diag = FALSE, upper = FALSE)
+x <- matrix(sample(c(FALSE, TRUE), 8, rep = TRUE), ncol = 2)
+dist(x, method = "Jaccard")
+dist(x, method = "euclidean")
+x <- matrix(sample(c(FALSE, TRUE), 8, rep = TRUE), ncol = 2)
+dist(test.vars, method = "euclidean")
+(mds <- cmdscale(test.vars))
+test.vars = mtest[ , -n]
+dist(test.vars, method = "euclidean")
+dist(test.vars,test.vars)
+dist(test.vars)
+View(test.vars)
+colnames(test.vars) <- test.features
+View(test.vars)
+matrix(test.vars)
+test.matr <- as.matrix(test.vars)
+View(mtest)

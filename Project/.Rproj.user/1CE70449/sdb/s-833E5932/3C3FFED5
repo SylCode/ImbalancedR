@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(SDR)\ntest = read.keel(\"DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tst.dat\")\nmtest <- t(simplify2array(test$data))\nn = ncol(mtest)\nm = nrow(mtest)\ntest.classnames = test$class_names\ntest.features = test$atributeNames[-n]\ntest.vars = mtest[ , -n]\ntest.matr <- as.matrix(test.vars)\ncolnames(test.vars) <- test.features\npc <- princomp(test.vars,cor=TRUE, scores = TRUE)\nsummary(pc)\nplot(pc, type=\"lines\")\nbiplot(pc)\nlibrary(rgl)\nplot3d(pc$scores[,-n], test.vars)\ndist(test.vars)\n(mds <- cmdscale(test.vars))\n",
+    "created" : 1460394479970.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "612811256",
+    "id" : "3C3FFED5",
+    "lastKnownWriteTime" : 1460453002,
+    "last_content_update" : 1460453002814,
+    "path" : "D:/Users/Никита/Desktop/Study/Semester III/ZMADM 2/Project/Project/S.R",
+    "project_path" : "S.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
