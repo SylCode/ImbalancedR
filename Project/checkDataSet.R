@@ -25,7 +25,7 @@ checkDataSet <- function(ds){
   
   # cechy z klasy
   features <- ds[1:m, -n]
-  score <- data.frame(minority = minority.class, majority = majority.class, safe = 0, unsafe = 0, borderline = 0, rare = 0, outlier = 0, minority.safe = 0, minority.unsafe = 0, minority.borderline = 0, minority.rare = 0, minority.outlier = 0, majority.safe = 0, majority.unsafe = 0, majority.borderline = 0, majority.rare = 0, majority.outlier = 0)
+  score <- data.frame(minority.class = minority.class, majority.class = majority.class, safe = 0, unsafe = 0, borderline = 0, rare = 0, outlier = 0, minority.safe = 0, minority.unsafe = 0, minority.borderline = 0, minority.rare = 0, minority.outlier = 0, majority.safe = 0, majority.unsafe = 0, majority.borderline = 0, majority.rare = 0, majority.outlier = 0)
   
   
   for (i in 1:m) {
