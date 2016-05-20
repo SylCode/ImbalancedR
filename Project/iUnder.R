@@ -1,4 +1,4 @@
-iOver <- function(ds, c0, c1) {
+iUnder <- function(ds, c0, c1) {
   
   source("checkDataSet.R")
   info <- checkDataSet(ds)
@@ -11,7 +11,7 @@ iOver <- function(ds, c0, c1) {
   
   Y <- c(maj$y, min$y)
   X <- c(maj$x, min$x)
-
+  
   library(unbalanced)
-  return(ubOver(X, Y))
+  return(ubUnder(X, Y))
 }
