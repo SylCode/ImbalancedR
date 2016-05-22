@@ -23,6 +23,7 @@ plot3d(pc$scores[,-n], col=test$cluster)
 source("checkDataSet.R")
 result <- checkDataSet(mtest)
 print(result)
+<<<<<<< HEAD
 source("iOver.R")
 i <- iOver(mtest, FALSE, TRUE, TRUE, TRUE)
 source("iUnder.R")
@@ -31,3 +32,8 @@ print(i)
 i<-cbind(i$X,i$Y)
 resultNew <- checkDataSet(i)
 print(resultNew)
+=======
+source("iOversampling.R")
+i <- iOversampling(mtest, 1)
+print(i)
+>>>>>>> 130232650f87d5d7f219215a55b10faae1483146

@@ -82,7 +82,11 @@ checkDataSet <- function(ds){
         score$unsafe <- score$unsafe + 1
         if (test.class == minority.class){
           score$minority.outlier <- score$minority.outlier + 1
+<<<<<<< HEAD
           score$minority.unsafe <- score$minority.unsafe + 1
+=======
+          score$minority.unsafe <- score$unsafe + 1
+>>>>>>> 130232650f87d5d7f219215a55b10faae1483146
         }
         else{
           score$majority.outlier <- score$majority.outlier + 1
