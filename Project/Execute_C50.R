@@ -14,10 +14,10 @@ Execute_C50 <- function( train, test)
   result <- as.numeric(levels(result))[result]
   result <- (result -1)*(-1)
   
-  print ("C50")
-  print(result)
-  print ("True")
-  print (test.output)
+  #print ("C50")
+  #print(result)
+  #print ("True")
+  #print (test.output)
   
   #print(result)
   return (checkResult(result, test.output))
