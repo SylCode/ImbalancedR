@@ -27,3 +27,4 @@ test.output <- as.factor(test.output)
 test.input <- as.data.frame(test.input)
 # predykcja
 result <- predict(treemodel, test.input)
+
