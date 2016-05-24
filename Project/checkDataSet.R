@@ -105,6 +105,6 @@ checkDataSet <- function(ds){
     }
   }
   
-  result <- list(score = score, features = features, classes = classes, types = types)
+  result <- list(score = score, X = features, Y = classes, types = types)
   return(result)
 }

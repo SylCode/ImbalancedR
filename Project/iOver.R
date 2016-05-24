@@ -1,35 +1,43 @@
-iOver <- function(dataSet, safe, borderLine, outlier, rare) {
+iOver <- function(dataset, safe, borderline, rare, outlier) {
   
   source("checkDataSet.R")
-  info <- checkDataSet(dataSet)
-  #print("Info_iOver")
-  #print(info)
+  testResult <- checkDataSet(dataset)
   
-  source("getNewSubset.R")
-  min = getNewSubset(info, safe, borderLine, outlier, rare, 0)
-  #print("min_iOver")
-  #print(min)
+  print(testResult)
   
-  source("getNewSet.R")
-  maj = getNewSet(info, 1)
-  #print("maj_iOver")
-  #print(maj)
+  X <- testResult$X
+  Y <- testResult$Y
   
-  Y <- c(maj$y, min$y)
-  Y <- (Y-1)*(-1)
-  X <- rbind(maj$x, min$x)
-  #X<-maj$x
-  #X<-min$x
+  if(testResult$score$minority.class == 0) {
+    Y <- (Y -1)*(-1)
+  }
   
+  indexes <- 0
+  if(safe) {
+    indexes <- c(indexes, which(testResult$types == 1))
+  }
+  if(borderline) {
+    indexes <- c(indexes, which(testResult$types == 2))
+  }
+  if(rare){
+    indexes <- c(indexes, which(testResult$types == 3))
+  }
+  if(outlier) {
+    indexes <- c(indexes, which(testResult$types == 4))
+  }
   
-  #print("X_iOver")
-  #print(X)
-  #print("Y_iOver")
-  #print(Y)
+  indexes <- indexes[-1]
+  
+  X <- X[indexes, ]
+  Y <- Y[indexes]
   
   library(unbalanced)
-  temp = ubOver(X,Y)
-  temp$Y - (temp$Y-1)*(-1)
+  data <- ubOver(X = X, Y = Y)
   
-  return(ubOver(X, Y))
+  if(testResult$score$minority.class == 0) {
+    data$Y <- (data$Y -1)*(-1)
+  }
+  return(data)
 }
+  
+
