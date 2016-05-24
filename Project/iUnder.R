@@ -1,4 +1,4 @@
-iOver <- function(dataset, safe, borderline, rare, outlier) {
+iUnder <- function(dataset, safe, borderline, rare, outlier) {
   
   source("checkDataSet.R")
   testResult <- checkDataSet(dataset)
@@ -43,7 +43,7 @@ iOver <- function(dataset, safe, borderline, rare, outlier) {
   Y <- c(maj.Y, min.Y)
   
   library(unbalanced)
-  data <- ubOver(X = X, Y = Y)
+  data <- ubUnder(X = X, Y = Y)
   
   if(testResult$score$minority.class == 0) {
     data$Y <- (data$Y -1)*(-1)

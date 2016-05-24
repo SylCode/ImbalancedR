@@ -7,7 +7,7 @@ test.X <- dataset$testSet[ , -dataset$n]
 test.Y <- dataset$testSet[ , dataset$n]
 
 source("iOver.R")
-data <- iOver(dataset = dataset$trainSet, safe = FALSE, borderline = TRUE, rare = TRUE, outlier = TRUE)
+data <- iOver(dataset = dataset$trainSet, safe = TRUE, borderline = TRUE, rare = TRUE, outlier = TRUE)
 
 source("testC50.R")
 result <- testC50(data = data, test.X = test.X)
