@@ -1,6 +1,6 @@
 library(SDR);
-training = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tra.dat");
-test = read.keel("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-1tst.dat");
+training = read.keel("DataSets/yeast5-5-fold (IR 32.73)/yeast5-5-1tra.dat");
+test = read.keel("DataSets/yeast5-5-fold (IR 32.73)/yeast5-5-1tst.dat");
 names(training)
 print(training)
 library(unbalanced)
