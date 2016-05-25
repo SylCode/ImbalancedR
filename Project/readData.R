@@ -1,4 +1,5 @@
 readData <- function(trainSet, testSet) {
+  library(SDR);
   training = read.keel(trainSet)
   test = read.keel(testSet)
   mtrain <- t(simplify2array(training$data))

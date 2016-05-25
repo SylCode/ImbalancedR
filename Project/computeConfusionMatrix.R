@@ -1,4 +1,4 @@
-computeConfusionMatrix <- function(result, Y) {
+computeConfusionMatrix <- function(result, Y, minority.class) {
   n <- length(result)
   tp <- 0
   tn <- 0
@@ -6,11 +6,11 @@ computeConfusionMatrix <- function(result, Y) {
   fp <- 0
   
   for(i in 1:n) {
-    if(result[i] == Y[i] && result[i] == 0) {
+    if(result[i] == Y[i] && Y[i] == minority.class) {
       tp <- tp + 1 
-    } else if(result[i] != Y[i] && result[i] == 0) {
+    } else if(result[i] != Y[i] && result[i] == minority.class) {
       fp <- fp + 1
-    } else if(result[i] != Y[i] && result[i] == 1) {
+    } else if(result[i] != Y[i] && result[i] != minority.class) {
       fn <- fn + 1
     } else {
       tn <- tn + 1

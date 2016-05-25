@@ -3,6 +3,12 @@ iOver <- function(dataset, safe, borderline, rare, outlier) {
   source("checkDataSet.R")
   testResult <- checkDataSet(dataset)
   
+  write(paste(safe, borderline, rare, outlier), file="test.txt", append = TRUE)
+  print(testResult$score$minority.safe)
+  print(testResult$score$minority.borderline)
+  print(testResult$score$minority.outlier)
+  print(testResult$score$minority.rare)
+  
   X <- testResult$X
   Y <- testResult$Y
   types <- testResult$types
@@ -11,7 +17,7 @@ iOver <- function(dataset, safe, borderline, rare, outlier) {
     Y <- (Y -1)*(-1)
   }
   
-  indexes <- which(testResult$Y == 1)
+  indexes <- which(Y == 1)
   
   min.X <- X[indexes, ]
   min.Y <- Y[indexes]
@@ -42,12 +48,16 @@ iOver <- function(dataset, safe, borderline, rare, outlier) {
   X <- rbind(maj.X, min.X)
   Y <- c(maj.Y, min.Y)
   
+  #write(min.X, file="test.txt", append = TRUE)
+  write(length(min.Y), file="test.txt", append = TRUE)
+  
   library(unbalanced)
   data <- ubOver(X = X, Y = Y)
   
   if(testResult$score$minority.class == 0) {
     data$Y <- (data$Y -1)*(-1)
   }
+  data$minority.class <- testResult$score$minority.class
   return(data)
 }
 
