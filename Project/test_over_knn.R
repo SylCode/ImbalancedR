@@ -67,7 +67,7 @@ for(k in 1:length(input)) {
       
       result <- Knn(data = data, test.X = test.X)
       
-      confusionMatrix <- computeConfusionMatrix(resul = result, Y = test.Y, minority.class = data$minority.class)
+      confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
       
       TP <- TP + confusionMatrix$TP
       TN <- TN + confusionMatrix$TN

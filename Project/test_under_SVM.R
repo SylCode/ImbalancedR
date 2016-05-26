@@ -1,10 +1,10 @@
 source("readData.R")
-source("iOver.R")
-source("C50.R")
+source("iUnder.R")
+source("SVM.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
 
-output <- "Results/results_over_C50.csv"
+output <- "Results/results_under_SVM.csv"
 
 input <- c("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-",
            "DataSets/dermatology-6-5-fold (IR 16.9)/dermatology-6-5-",
@@ -61,10 +61,10 @@ for(k in 1:length(input)) {
         break
       }
       
-      data <- iOver(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
+      data <- iUnder(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
                     safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
       
-      result <- C50(data = data, test.X = test.X)
+      result <- mySVM(data = data, test.X = test.X)
       
       confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
       
