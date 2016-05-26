@@ -44,7 +44,7 @@ for(k in 1:length(input)) {
     
     checkResults <- TRUE
     
-    for(i in 1:1) {
+    for(i in 1:5) {
       dataset <- readData(paste(input[k],i,"tra.dat", sep=""), paste(input[k],i,"tst.dat", sep=""))
       
       test.X <- dataset$testSet[ , -dataset$n]
