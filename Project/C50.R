@@ -1,4 +1,4 @@
-testC50 <- function(data, test.X) {
+C50 <- function(data, test.X) {
   library(C50)
   train.Y = as.factor(data$Y)
   train.X = as.data.frame(data$X)

@@ -1,19 +1,6 @@
-iOver <- function(dataset, safe, borderline, rare, outlier) {
+iOver <- function(X, Y, minority.class, types, safe, borderline, rare, outlier) {
   
-  source("checkDataSet.R")
-  testResult <- checkDataSet(dataset)
-  
-  write(paste(safe, borderline, rare, outlier), file="test.txt", append = TRUE)
-  print(testResult$score$minority.safe)
-  print(testResult$score$minority.borderline)
-  print(testResult$score$minority.outlier)
-  print(testResult$score$minority.rare)
-  
-  X <- testResult$X
-  Y <- testResult$Y
-  types <- testResult$types
-  
-  if(testResult$score$minority.class == 0) {
+  if(minority.class == 0) {
     Y <- (Y -1)*(-1)
   }
   
@@ -33,10 +20,10 @@ iOver <- function(dataset, safe, borderline, rare, outlier) {
   if(borderline) {
     indexes <- c(indexes, which(min.types == 2))
   }
-  if(rare){
+  if(outlier){
     indexes <- c(indexes, which(min.types == 3))
   }
-  if(outlier) {
+  if(rare) {
     indexes <- c(indexes, which(min.types == 4))
   }
   
@@ -48,17 +35,13 @@ iOver <- function(dataset, safe, borderline, rare, outlier) {
   X <- rbind(maj.X, min.X)
   Y <- c(maj.Y, min.Y)
   
-  #write(min.X, file="test.txt", append = TRUE)
-  write(length(min.Y), file="test.txt", append = TRUE)
-  
   library(unbalanced)
   data <- ubOver(X = X, Y = Y)
   
-  if(testResult$score$minority.class == 0) {
+  if(minority.class == 0) {
     data$Y <- (data$Y -1)*(-1)
   }
-  data$minority.class <- testResult$score$minority.class
+  
+  data$minority.class <- minority.class
   return(data)
 }
-
-
