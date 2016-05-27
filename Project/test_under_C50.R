@@ -1,8 +1,10 @@
 source("readData.R")
 source("iUnder.R")
-source("Knn.R")
+source("C50.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
+source("checkDataSet.R")
+source("checkNumOfObjs.R")
 source("getROC_AUC.R")
 
 output <- "Results/results_under_C50.csv"
