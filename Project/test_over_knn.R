@@ -3,9 +3,7 @@ source("iOver.R")
 source("Knn.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
-source("checkDataSet.R")
 source("getROC_AUC.R")
-source("checkNumOfObjs.R")
 
 
 output <- "Results/results_over_knn.csv"
@@ -75,14 +73,14 @@ for(k in 1:length(input)) {
       auc = unlist(aList$auc)
       
       #Wykrec ROC i AUC
-      #stack_x = unlist(aList$stack_x)
-      #stack_y = unlist(aList$stack_y)
+      stack_x = unlist(aList$stack_x)
+      stack_y = unlist(aList$stack_y)
       
-      #plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
-      #axis(1, seq(0.0,1.0,0.1))
-      #axis(2, seq(0.0,1.0,0.1))
-      #abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-      #legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
+      plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
+      axis(1, seq(0.0,1.0,0.1))
+      axis(2, seq(0.0,1.0,0.1))
+      abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
+      legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
       
       TP <- TP + confusionMatrix$TP
       TP <- TP + confusionMatrix$TP
