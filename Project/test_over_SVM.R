@@ -3,7 +3,6 @@ source("iOver.R")
 source("SVM.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
-source("getROC_AUC.R")
 
 output <- "Results/results_over_SVM.csv"
 
@@ -32,7 +31,7 @@ values <- c(TRUE, FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE,
 
 choise <- matrix(values, 15)
 
-write("Set;Safe;Borderline;Rare;Outlier;TP;TN;FP;FN;GMean, AUC", file = output, sep=";", append = TRUE)
+write("Set;Safe;Borderline;Rare;Outlier;TP;TN;FP;FN;GMean", file = output, sep=";", append = TRUE)
 
 for(k in 1:length(input)) {
   
@@ -68,20 +67,7 @@ for(k in 1:length(input)) {
       result <- mySVM(data = data, test.X = test.X)
       
       confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
-      aList = getROC_AUC(result, test.Y) 
-      auc = unlist(aList$auc)
       
-      #Wykrec ROC i AUC
-      #stack_x = unlist(aList$stack_x)
-      #stack_y = unlist(aList$stack_y)
-      
-      #plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
-      #axis(1, seq(0.0,1.0,0.1))
-      #axis(2, seq(0.0,1.0,0.1))
-      #abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-      #legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
-      
-      TP <- TP + confusionMatrix$TP
       TP <- TP + confusionMatrix$TP
       TN <- TN + confusionMatrix$TN
       FP <- FP + confusionMatrix$FP
@@ -92,10 +78,10 @@ for(k in 1:length(input)) {
       gmean <- computeGmean(tp = TP, fp = FP, fn = FN)
       
       write(paste(nameSet[k], choise[j, 1], choise[j, 2], choise[j, 3], choise[j, 4], 
-                  TP, TN, FP, FN, gmean, auc, sep=";"), file = output, append = TRUE)
+                  TP, TN, FP, FN, gmean, sep=";"), file = output, append = TRUE)
     } else {
       write(paste(nameSet[k], choise[j, 1], choise[j, 2], choise[j, 3], choise[j, 4], 
-                  "-", "-", "-", "-", "-", "-", sep=";"), file = output, append = TRUE)
+                  "-", "-", "-", "-", "-", sep=";"), file = output, append = TRUE)
     }
   }
   
