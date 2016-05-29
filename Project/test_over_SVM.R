@@ -3,9 +3,7 @@ source("iOver.R")
 source("SVM.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
-source("checkDataSet.R")
 source("getROC_AUC.R")
-source("checkNumOfObjs.R")
 
 output <- "Results/results_over_SVM.csv"
 

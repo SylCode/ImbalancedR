@@ -3,8 +3,6 @@ source("iUnder.R")
 source("Knn.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
-source("checkDataSet.R")
-source("checkNumOfObjs.R")
 source("getROC_AUC.R")
 
 output <- "Results/results_under_knn.csv"
