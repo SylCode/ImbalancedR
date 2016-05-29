@@ -3,7 +3,9 @@ source("iOver.R")
 source("C50.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
+source("checkDataSet.R")
 source("getROC_AUC.R")
+source("checkNumOfObjs.R")
 
 output <- "Results/results_over_C50.csv"
 
