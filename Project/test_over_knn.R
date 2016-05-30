@@ -33,7 +33,7 @@ values <- c(TRUE, FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE,
 
 choise <- matrix(values, 15)
 
-write("Set;Safe;Borderline;Rare;Outlier;TP;TN;FP;FN;GMean, AUC", file = output, sep=";", append = TRUE)
+write("Set;Safe;Borderline;Rare;Outlier;N_Safe;Nnew_Safe;N_Borderline;Nnew_Borderline;N_Rare;Nnew_Rare;N_Outlier;Nnew_Outlier;N_Minority;Nnew_Minority;N_Majority;Nnew_Majority;IR;newIR;TP;TN;FP;FN;GMean;AUC", file = output, sep=";", append = TRUE)
 
 for(k in 1:length(input)) {
 
@@ -54,6 +54,14 @@ for(k in 1:length(input)) {
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
       
+      N_Safe <- testResult$score$minority.safe
+      N_Borderline <- testResult$score$minority.borderline
+      N_Rare <- testResult$score$minority.rare
+      N_Outlier <- testResult$score$minority.outlier
+      N_Minority <- testResult$score$minority.count
+      N_Majority <- testResult$score$majority.count
+      IR <- N_Majority/N_Minority
+      
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
                                   rare = choise[j, 3], outlier = choise[j, 4]) 
@@ -65,6 +73,17 @@ for(k in 1:length(input)) {
       
       data <- iOver(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
                     safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
+      
+      testData = cbind(data$X,data$Y)
+      testResult <- checkDataSet(testData)
+      
+      Nnew_Safe <- testResult$score$minority.safe
+      Nnew_Borderline <- testResult$score$minority.borderline
+      Nnew_Rare <- testResult$score$minority.rare
+      Nnew_Outlier <- testResult$score$minority.outlier
+      Nnew_Minority <- testResult$score$minority.count
+      Nnew_Majority <- testResult$score$majority.count
+      newIR <- Nnew_Majority/Nnew_Minority
       
       result <- Knn(data = data, test.X = test.X)
       
@@ -92,11 +111,11 @@ for(k in 1:length(input)) {
     if(checkResults) {
       gmean <- computeGmean(tp = TP, fp = FP, fn = FN)
       
-      write(paste(nameSet[k], choise[j, 1], choise[j, 2], choise[j, 3], choise[j, 4], 
+      write(paste(nameSet[k], choise[j, 1], choise[j, 2], choise[j, 3], choise[j, 4], N_Safe,Nnew_Safe,N_Borderline,Nnew_Borderline,N_Rare,Nnew_Rare,N_Outlier,Nnew_Outlier,N_Minority,Nnew_Minority,N_Majority,Nnew_Majority,IR,newIR,
                   TP, TN, FP, FN, gmean, auc, sep=";"), file = output, append = TRUE)
     } else {
       write(paste(nameSet[k], choise[j, 1], choise[j, 2], choise[j, 3], choise[j, 4], 
-                  "-", "-", "-", "-", "-", "-", sep=";"), file = output, append = TRUE)
+                  "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", sep=";"), file = output, append = TRUE)
     }
   }
   

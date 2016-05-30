@@ -18,14 +18,18 @@ checkDataSet <- function(ds){
   if(class1 > class2) {
     majority.class <- 1;
     minority.class <- 0;
+    minority.count <- class2;
+    majority.count <- class1;
   } else {
     majority.class <- 0;
     minority.class <- 1;
+    minority.count <- class1;
+    majority.count <- class2;
   }
   
   # cechy z klasy
   features <- ds[1:m, -n]
-  score <- data.frame(minority.class = minority.class, majority.class = majority.class, 
+  score <- data.frame(minority.class = minority.class, majority.class = majority.class, minority.count = minority.count, majority.count = majority.count,
                       safe = 0, unsafe = 0, borderline = 0, rare = 0, outlier = 0, 
                       minority.safe = 0, minority.unsafe = 0, minority.borderline = 0, minority.rare = 0, minority.outlier = 0, 
                       majority.safe = 0, majority.unsafe = 0, majority.borderline = 0, majority.rare = 0, majority.outlier = 0)
