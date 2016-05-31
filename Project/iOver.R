@@ -38,14 +38,24 @@ iOver <- function(X, Y, minority.class, types, safe, borderline, rare, outlier) 
   
   indexes <- indexes[-1]
   
-  min.X = min.X[indexes, ]
-  min.Y = min.Y[indexes]
-  
-  X <- rbind(maj.X, min.X)
-  Y <- c(maj.Y, min.Y)
-
-  library(unbalanced)
-  data <- ubOver(X = X, Y = Y)
+  if(length(indexes) > 1) {
+    min.X <- min.X[indexes, ]
+    min.Y <- min.Y[indexes]
+    
+    X <- rbind(maj.X, min.X)
+    Y <- c(maj.Y, min.Y)
+    
+    library(unbalanced)
+    data <- ubOver(X = X, Y = Y, k = 0)
+    
+  } else {
+    
+    min.Y <- rep(1, length(maj.Y))
+    min.X <- min.X[min.Y, ]
+    X <- rbind(maj.X, min.X)
+    Y <- c(maj.Y, min.Y)
+    data <- list(X = X, Y = Y)
+  }
   
   if(minority.class == 0) {
     data$Y <- (data$Y -1)*(-1)
