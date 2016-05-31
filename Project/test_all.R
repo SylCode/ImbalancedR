@@ -56,14 +56,7 @@ for(k in 1:length(input)) {
       
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
-      
-      N_Safe <- testResult$score$minority.safe
-      N_Borderline <- testResult$score$minority.borderline
-      N_Rare <- testResult$score$minority.rare
-      N_Outlier <- testResult$score$minority.outlier
-      N_Minority <- testResult$score$minority.count
-      N_Majority <- testResult$score$majority.count
-      IR <- N_Majority/N_Minority
+     
       
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
@@ -79,6 +72,14 @@ for(k in 1:length(input)) {
       
       testData = cbind(data$X,data$Y)
       testResult <- checkDataSet(testData)
+      
+      N_Safe <- data$N_Safe
+      N_Borderline <- data$N_Borderline
+      N_Rare <- data$N_Rare
+      N_Outlier <- data$N_Outlier
+      N_Minority <- data$N_Minority
+      N_Majority <- data$N_Majority
+      IR <- N_Majority/N_Minority
       
       Nnew_Safe <- testResult$score$minority.safe
       Nnew_Borderline <- testResult$score$minority.borderline
@@ -146,15 +147,7 @@ for(k in 1:length(input)) {
       
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
-      
-      N_Safe <- testResult$score$minority.safe
-      N_Borderline <- testResult$score$minority.borderline
-      N_Rare <- testResult$score$minority.rare
-      N_Outlier <- testResult$score$minority.outlier
-      N_Minority <- testResult$score$minority.count
-      N_Majority <- testResult$score$majority.count
-      IR <- N_Majority/N_Minority
-      
+     
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
                                   rare = choise[j, 3], outlier = choise[j, 4]) 
@@ -169,6 +162,14 @@ for(k in 1:length(input)) {
       
       testData = cbind(data$X,data$Y)
       testResult <- checkDataSet(testData)
+      
+      N_Safe <- data$N_Safe
+      N_Borderline <- data$N_Borderline
+      N_Rare <- data$N_Rare
+      N_Outlier <- data$N_Outlier
+      N_Minority <- data$N_Minority
+      N_Majority <- data$N_Majority
+      IR <- N_Majority/N_Minority
       
       Nnew_Safe <- testResult$score$minority.safe
       Nnew_Borderline <- testResult$score$minority.borderline
@@ -240,13 +241,7 @@ for(k in 1:length(input)) {
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
       
-      N_Safe <- testResult$score$minority.safe
-      N_Borderline <- testResult$score$minority.borderline
-      N_Rare <- testResult$score$minority.rare
-      N_Outlier <- testResult$score$minority.outlier
-      N_Minority <- testResult$score$minority.count
-      N_Majority <- testResult$score$majority.count
-      IR <- N_Majority/N_Minority
+    
       
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
@@ -262,6 +257,14 @@ for(k in 1:length(input)) {
       
       testData = cbind(data$X,data$Y)
       testResult <- checkDataSet(testData)
+      
+      N_Safe <- data$N_Safe
+      N_Borderline <- data$N_Borderline
+      N_Rare <- data$N_Rare
+      N_Outlier <- data$N_Outlier
+      N_Minority <- data$N_Minority
+      N_Majority <- data$N_Majority
+      IR <- N_Majority/N_Minority
       
       Nnew_Safe <- testResult$score$minority.safe
       Nnew_Borderline <- testResult$score$minority.borderline
@@ -328,14 +331,7 @@ for(k in 1:length(input)) {
       
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
-      
-      N_Safe <- testResult$score$minority.safe
-      N_Borderline <- testResult$score$minority.borderline
-      N_Rare <- testResult$score$minority.rare
-      N_Outlier <- testResult$score$minority.outlier
-      N_Minority <- testResult$score$minority.count
-      N_Majority <- testResult$score$majority.count
-      IR <- N_Majority/N_Minority
+     
       
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
@@ -351,6 +347,14 @@ for(k in 1:length(input)) {
       
       testData = cbind(data$X,data$Y)
       testResult <- checkDataSet(testData)
+      
+      N_Safe <- data$N_Safe
+      N_Borderline <- data$N_Borderline
+      N_Rare <- data$N_Rare
+      N_Outlier <- data$N_Outlier
+      N_Minority <- data$N_Minority
+      N_Majority <- data$N_Majority
+      IR <- N_Majority/N_Minority
       
       Nnew_Safe <- testResult$score$minority.safe
       Nnew_Borderline <- testResult$score$minority.borderline
@@ -418,13 +422,7 @@ for(k in 1:length(input)) {
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
       
-      N_Safe <- testResult$score$minority.safe
-      N_Borderline <- testResult$score$minority.borderline
-      N_Rare <- testResult$score$minority.rare
-      N_Outlier <- testResult$score$minority.outlier
-      N_Minority <- testResult$score$minority.count
-      N_Majority <- testResult$score$majority.count
-      IR <- N_Majority/N_Minority
+     
       
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
@@ -440,6 +438,14 @@ for(k in 1:length(input)) {
       
       testData = cbind(data$X,data$Y)
       testResult <- checkDataSet(testData)
+      
+      N_Safe <- data$N_Safe
+      N_Borderline <- data$N_Borderline
+      N_Rare <- data$N_Rare
+      N_Outlier <- data$N_Outlier
+      N_Minority <- data$N_Minority
+      N_Majority <- data$N_Majority
+      IR <- N_Majority/N_Minority
       
       Nnew_Safe <- testResult$score$minority.safe
       Nnew_Borderline <- testResult$score$minority.borderline

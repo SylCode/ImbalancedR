@@ -8,21 +8,21 @@ source("getROC_AUC.R")
 output <- "Results/results_under_knn.csv"
 
 input <- c("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-",
-           "DataSets/dermatology-6-5-fold (IR 16.9)/dermatology-6-5-",
-           "DataSets/ecoli4-5-fold (IR 15.8)/ecoli4-5-",
-           "DataSets/kddcup-buffer_overflow_vs_back-5-fold (IR 73.43)/kddcup-buffer_overflow_vs_back-5-",
-           "DataSets/kddcup-rootkit-imap_vs_back-5-fold (IR 100.14)/kddcup-rootkit-imap_vs_back-5-",
-           "DataSets/segment0-5-fold (IR 6.02)/segment0-5-",
-           "DataSets/winequality-red-8_vs_6-7-5-fold (IR 46.5)/winequality-red-8_vs_6-7-5-",
+           #"DataSets/dermatology-6-5-fold (IR 16.9)/dermatology-6-5-",
+           #"DataSets/ecoli4-5-fold (IR 15.8)/ecoli4-5-",
+           #"DataSets/kddcup-buffer_overflow_vs_back-5-fold (IR 73.43)/kddcup-buffer_overflow_vs_back-5-",
+           #"DataSets/kddcup-rootkit-imap_vs_back-5-fold (IR 100.14)/kddcup-rootkit-imap_vs_back-5-",
+           #"DataSets/segment0-5-fold (IR 6.02)/segment0-5-",
+           #"DataSets/winequality-red-8_vs_6-7-5-fold (IR 46.5)/winequality-red-8_vs_6-7-5-",
            "DataSets/yeast5-5-fold (IR 32.73)/yeast5-5-")
 
 nameSet <- c("wisconsin",
-             "dermatology-6",
-             "ecoli4",
-             "kddcup-buffer_overflow_vs_back",
-             "kddcup-rootkit-imap_vs_back",
-             "segment0",
-             "winequality-red-8_vs_6-7",
+             #"dermatology-6",
+             #"ecoli4",
+             #"kddcup-buffer_overflow_vs_back",
+             #"kddcup-rootkit-imap_vs_back",
+             #"segment0",
+             #"winequality-red-8_vs_6-7",
              "yeast5")
 
 values <- c(TRUE, FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE, 
@@ -52,14 +52,7 @@ for(k in 1:length(input)) {
       
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
-      
-      N_Safe <- testResult$score$minority.safe
-      N_Borderline <- testResult$score$minority.borderline
-      N_Rare <- testResult$score$minority.rare
-      N_Outlier <- testResult$score$minority.outlier
-      N_Minority <- testResult$score$minority.count
-      N_Majority <- testResult$score$majority.count
-      IR <- N_Majority/N_Minority
+
     
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
@@ -75,6 +68,14 @@ for(k in 1:length(input)) {
       
       testData = cbind(data$X,data$Y)
       testResult <- checkDataSet(testData)
+      
+      N_Safe <- data$N_Safe
+      N_Borderline <- data$N_Borderline
+      N_Rare <- data$N_Rare
+      N_Outlier <- data$N_Outlier
+      N_Minority <- data$N_Minority
+      N_Majority <- data$N_Majority
+      IR <- N_Majority/N_Minority
       
       Nnew_Safe <- testResult$score$minority.safe
       Nnew_Borderline <- testResult$score$minority.borderline
