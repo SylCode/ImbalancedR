@@ -12,21 +12,21 @@ source("getROC_AUC.R")
 output <- "Results/results_over_knn.csv"
 
 input <- c("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-",
-           #"DataSets/dermatology-6-5-fold (IR 16.9)/dermatology-6-5-",
-           #"DataSets/ecoli4-5-fold (IR 15.8)/ecoli4-5-",
+           "DataSets/dermatology-6-5-fold (IR 16.9)/dermatology-6-5-",
+           "DataSets/ecoli4-5-fold (IR 15.8)/ecoli4-5-",
            #"DataSets/kddcup-buffer_overflow_vs_back-5-fold (IR 73.43)/kddcup-buffer_overflow_vs_back-5-",
            #"DataSets/kddcup-rootkit-imap_vs_back-5-fold (IR 100.14)/kddcup-rootkit-imap_vs_back-5-",
-           #"DataSets/segment0-5-fold (IR 6.02)/segment0-5-",
-           #"DataSets/winequality-red-8_vs_6-7-5-fold (IR 46.5)/winequality-red-8_vs_6-7-5-",
+           "DataSets/segment0-5-fold (IR 6.02)/segment0-5-",
+           "DataSets/winequality-red-8_vs_6-7-5-fold (IR 46.5)/winequality-red-8_vs_6-7-5-",
            "DataSets/yeast5-5-fold (IR 32.73)/yeast5-5-")
 
 nameSet <- c("wisconsin",
-             #"dermatology-6",
-             #"ecoli4",
+             "dermatology-6",
+             "ecoli4",
              #"kddcup-buffer_overflow_vs_back",
              #"kddcup-rootkit-imap_vs_back",
-             #"segment0",
-             #"winequality-red-8_vs_6-7",
+             "segment0",
+             "winequality-red-8_vs_6-7",
              "yeast5")
 
 values <- c(TRUE, FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE, 
