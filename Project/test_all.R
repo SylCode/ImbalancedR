@@ -1,11 +1,15 @@
 source("readData.R")
 source("iOver.R")
+source("iUnder.R")
 source("Knn.R")
-source("SVM.R")
 source("C50.R")
+source("SVM.R")
 source("computeConfusionMatrix.R")
 source("computeGmean.R")
 source("getROC_AUC.R")
+
+
+output <- "Results/results_over_knn.csv"
 
 input <- c("DataSets/wisconsin-5-fold (IR 1.86)/wisconsin-5-",
            #"DataSets/dermatology-6-5-fold (IR 16.9)/dermatology-6-5-",
@@ -31,13 +35,9 @@ values <- c(TRUE, FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE, TRUE,  FALSE,
             TRUE, TRUE,  TRUE,  TRUE,  TRUE,  TRUE,  TRUE,  TRUE,  FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
 
 choise <- matrix(values, 15)
+wData = "Set;Safe;Borderline;Rare;Outlier;N_Safe;Nnew_Safe;N_Borderline;Nnew_Borderline;N_Rare;Nnew_Rare;N_Outlier;Nnew_Outlier;N_Minority;Nnew_Minority;N_Majority;Nnew_Majority;IR;newIR;TP;TN;FP;FN;GMean;AUC"
 
-writeTag = "Set;Safe;Borderline;Rare;Outlier;N_Safe;Nnew_Safe;N_Borderline;Nnew_Borderline;N_Rare;Nnew_Rare;N_Outlier;Nnew_Outlier;N_Minority;Nnew_Minority;N_Majority;Nnew_Majority;IR;newIR;TP;TN;FP;FN;GMean;AUC"
-
-output <- "Results/results_over_knn.csv"
-
-write(writeTag, file = output, sep=";", append = TRUE)
-
+write(wData, file = output, sep=";", append = TRUE)
 for(k in 1:length(input)) {
   
   for(j in 1:nrow(choise)) {
@@ -56,7 +56,6 @@ for(k in 1:length(input)) {
       
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
-     
       
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
@@ -67,49 +66,51 @@ for(k in 1:length(input)) {
         break
       }
       
-      data <- iOver(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
-                    safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
-      
-      testData = cbind(data$X,data$Y)
-      testResult <- checkDataSet(testData)
-      
-      N_Safe <- data$N_Safe
-      N_Borderline <- data$N_Borderline
-      N_Rare <- data$N_Rare
-      N_Outlier <- data$N_Outlier
-      N_Minority <- data$N_Minority
-      N_Majority <- data$N_Majority
-      IR <- N_Majority/N_Minority
-      
-      Nnew_Safe <- testResult$score$minority.safe
-      Nnew_Borderline <- testResult$score$minority.borderline
-      Nnew_Rare <- testResult$score$minority.rare
-      Nnew_Outlier <- testResult$score$minority.outlier
-      Nnew_Minority <- testResult$score$minority.count
-      Nnew_Majority <- testResult$score$majority.count
-      newIR <- Nnew_Majority/Nnew_Minority
-      
-      result <- Knn(data = data, test.X = test.X)
-      
-      confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
-      aList = getROC_AUC(result, test.Y) 
-      auc = unlist(aList$auc)
-      
-      #Wykrec ROC i AUC
-      stack_x = unlist(aList$stack_x)
-      stack_y = unlist(aList$stack_y)
-      
-      plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
-      axis(1, seq(0.0,1.0,0.1))
-      axis(2, seq(0.0,1.0,0.1))
-      abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-      legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
-      
-      TP <- TP + confusionMatrix$TP
-      TP <- TP + confusionMatrix$TP
-      TN <- TN + confusionMatrix$TN
-      FP <- FP + confusionMatrix$FP
-      FN <- FN + confusionMatrix$FN
+      for(l in 1:10) {
+        data <- iOver(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
+                      safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
+        
+        testData = cbind(data$X,data$Y)
+        testResult <- checkDataSet(testData)
+        
+        N_Safe <- data$N_Safe
+        N_Borderline <- data$N_Borderline
+        N_Rare <- data$N_Rare
+        N_Outlier <- data$N_Outlier
+        N_Minority <- data$N_Minority
+        N_Majority <- data$N_Majority
+        IR <- N_Majority/N_Minority
+        
+        Nnew_Safe <- testResult$score$minority.safe
+        Nnew_Borderline <- testResult$score$minority.borderline
+        Nnew_Rare <- testResult$score$minority.rare
+        Nnew_Outlier <- testResult$score$minority.outlier
+        Nnew_Minority <- testResult$score$minority.count
+        Nnew_Majority <- testResult$score$majority.count
+        newIR <- Nnew_Majority/Nnew_Minority
+        
+        result <- Knn(data = data, test.X = test.X)
+        
+        confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
+        
+        aList = getROC_AUC(result, test.Y) 
+        auc = unlist(aList$auc)
+        
+        #Wykrec ROC i AUC
+        stack_x = unlist(aList$stack_x)
+        stack_y = unlist(aList$stack_y)
+        
+        plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
+        axis(1, seq(0.0,1.0,0.1))
+        axis(2, seq(0.0,1.0,0.1))
+        abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
+        legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
+        
+        TP <- TP + confusionMatrix$TP
+        TN <- TN + confusionMatrix$TN
+        FP <- FP + confusionMatrix$FP
+        FN <- FN + confusionMatrix$FN
+      }
     }
     
     if(checkResults) {
@@ -127,7 +128,8 @@ for(k in 1:length(input)) {
 
 output <- "Results/results_under_knn.csv"
 
-write(writeTag, file = output, sep=";", append = TRUE)
+
+write(wData, file = output, sep=";", append = TRUE)
 
 for(k in 1:length(input)) {
   
@@ -145,10 +147,8 @@ for(k in 1:length(input)) {
       test.X <- dataset$testSet[ , -dataset$n]
       test.Y <- dataset$testSet[ , dataset$n]
       
-      source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
-     
-      source("checkNumOfObjs.R")
+      
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
                                   rare = choise[j, 3], outlier = choise[j, 4]) 
       
@@ -157,51 +157,51 @@ for(k in 1:length(input)) {
         break
       }
       
-      data <- iUnder(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
-                     safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
-      
-      testData = cbind(data$X,data$Y)
-      testResult <- checkDataSet(testData)
-      
-      N_Safe <- data$N_Safe
-      N_Borderline <- data$N_Borderline
-      N_Rare <- data$N_Rare
-      N_Outlier <- data$N_Outlier
-      N_Minority <- data$N_Minority
-      N_Majority <- data$N_Majority
-      IR <- N_Majority/N_Minority
-      
-      Nnew_Safe <- testResult$score$minority.safe
-      Nnew_Borderline <- testResult$score$minority.borderline
-      Nnew_Rare <- testResult$score$minority.rare
-      Nnew_Outlier <- testResult$score$minority.outlier
-      Nnew_Minority <- testResult$score$minority.count
-      Nnew_Majority <- testResult$score$majority.count
-      newIR <- Nnew_Majority/Nnew_Minority
-      
-      result <- Knn(data = data, test.X = test.X)
-      
-      confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
-      aList = getROC_AUC(result, test.Y) 
-      auc = unlist(aList$auc)
-      
-      #Wykrec ROC i AUC
-      stack_x = unlist(aList$stack_x)
-      stack_y = unlist(aList$stack_y)
-      
-      plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
-      axis(1, seq(0.0,1.0,0.1))
-      axis(2, seq(0.0,1.0,0.1))
-      abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-      legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
-      
-      TP <- TP + confusionMatrix$TP
-      TP <- TP + confusionMatrix$TP
-      TN <- TN + confusionMatrix$TN
-      FP <- FP + confusionMatrix$FP
-      FN <- FN + confusionMatrix$FN
-      
-      
+      for(l in 1:10) {
+        data <- iUnder(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
+                       safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
+       
+         testData = cbind(data$X,data$Y)
+        testResult <- checkDataSet(testData)
+        
+        N_Safe <- data$N_Safe
+        N_Borderline <- data$N_Borderline
+        N_Rare <- data$N_Rare
+        N_Outlier <- data$N_Outlier
+        N_Minority <- data$N_Minority
+        N_Majority <- data$N_Majority
+        IR <- N_Majority/N_Minority
+        
+        Nnew_Safe <- testResult$score$minority.safe
+        Nnew_Borderline <- testResult$score$minority.borderline
+        Nnew_Rare <- testResult$score$minority.rare
+        Nnew_Outlier <- testResult$score$minority.outlier
+        Nnew_Minority <- testResult$score$minority.count
+        Nnew_Majority <- testResult$score$majority.count
+        newIR <- Nnew_Majority/Nnew_Minority
+        
+        result <- Knn(data = data, test.X = test.X)
+        
+        confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
+        
+        aList = getROC_AUC(result, test.Y) 
+        auc = unlist(aList$auc)
+        
+        #Wykrec ROC i AUC
+        stack_x = unlist(aList$stack_x)
+        stack_y = unlist(aList$stack_y)
+        
+        plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
+        axis(1, seq(0.0,1.0,0.1))
+        axis(2, seq(0.0,1.0,0.1))
+        abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
+        legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
+        
+        TP <- TP + confusionMatrix$TP
+        TN <- TN + confusionMatrix$TN
+        FP <- FP + confusionMatrix$FP
+        FN <- FN + confusionMatrix$FN
+      }
     }
     
     if(checkResults) {
@@ -220,7 +220,8 @@ for(k in 1:length(input)) {
 
 output <- "Results/results_over_C50.csv"
 
-write(writeTag, file = output, sep=";", append = TRUE)
+
+write(wData, file = output, sep=";", append = TRUE)
 
 for(k in 1:length(input)) {
   
@@ -241,8 +242,6 @@ for(k in 1:length(input)) {
       source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
       
-    
-      
       source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
                                   rare = choise[j, 3], outlier = choise[j, 4]) 
@@ -252,51 +251,52 @@ for(k in 1:length(input)) {
         break
       }
       
-      data <- iUnder(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
-                     safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
-      
-      testData = cbind(data$X,data$Y)
-      testResult <- checkDataSet(testData)
-      
-      N_Safe <- data$N_Safe
-      N_Borderline <- data$N_Borderline
-      N_Rare <- data$N_Rare
-      N_Outlier <- data$N_Outlier
-      N_Minority <- data$N_Minority
-      N_Majority <- data$N_Majority
-      IR <- N_Majority/N_Minority
-      
-      Nnew_Safe <- testResult$score$minority.safe
-      Nnew_Borderline <- testResult$score$minority.borderline
-      Nnew_Rare <- testResult$score$minority.rare
-      Nnew_Outlier <- testResult$score$minority.outlier
-      Nnew_Minority <- testResult$score$minority.count
-      Nnew_Majority <- testResult$score$majority.count
-      newIR <- Nnew_Majority/Nnew_Minority
-      
-      result <- C50(data = data, test.X = test.X)
-      
-      confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
-      aList = getROC_AUC(result, test.Y) 
-      auc = unlist(aList$auc)
-      
-      #Wykrec ROC i AUC
-      stack_x = unlist(aList$stack_x)
-      stack_y = unlist(aList$stack_y)
-      
-      plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
-      axis(1, seq(0.0,1.0,0.1))
-      axis(2, seq(0.0,1.0,0.1))
-      abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-      legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
-      
-      TP <- TP + confusionMatrix$TP
-      TP <- TP + confusionMatrix$TP
-      TN <- TN + confusionMatrix$TN
-      FP <- FP + confusionMatrix$FP
-      FN <- FN + confusionMatrix$FN
+      for(l in 1:10) {
+        data <- iOver(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
+                      safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
+        
+        testData = cbind(data$X,data$Y)
+        testResult <- checkDataSet(testData)
+        
+        N_Safe <- data$N_Safe
+        N_Borderline <- data$N_Borderline
+        N_Rare <- data$N_Rare
+        N_Outlier <- data$N_Outlier
+        N_Minority <- data$N_Minority
+        N_Majority <- data$N_Majority
+        IR <- N_Majority/N_Minority
+        
+        Nnew_Safe <- testResult$score$minority.safe
+        Nnew_Borderline <- testResult$score$minority.borderline
+        Nnew_Rare <- testResult$score$minority.rare
+        Nnew_Outlier <- testResult$score$minority.outlier
+        Nnew_Minority <- testResult$score$minority.count
+        Nnew_Majority <- testResult$score$majority.count
+        newIR <- Nnew_Majority/Nnew_Minority
+        
+        result <- C50(data = data, test.X = test.X)
+        
+        confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
+        
+        aList = getROC_AUC(result, test.Y) 
+        auc = unlist(aList$auc)
+        
+        #Wykrec ROC i AUC
+        stack_x = unlist(aList$stack_x)
+        stack_y = unlist(aList$stack_y)
+        
+        plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
+        axis(1, seq(0.0,1.0,0.1))
+        axis(2, seq(0.0,1.0,0.1))
+        abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
+        legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
+        
+        TP <- TP + confusionMatrix$TP
+        TN <- TN + confusionMatrix$TN
+        FP <- FP + confusionMatrix$FP
+        FN <- FN + confusionMatrix$FN
+      }
     }
-    
     if(checkResults) {
       gmean <- computeGmean(tp = TP, fp = FP, fn = FN)
       
@@ -309,99 +309,10 @@ for(k in 1:length(input)) {
   }
   
 }
-output <- "Results/results_over_SVM.csv"
 
-write(writeTag, file = output, sep=";", append = TRUE)
+output <- "Results/results_under_C50.csv"
 
-for(k in 1:length(input)) {
-  
-  for(j in 1:nrow(choise)) {
-    TP <- 0
-    TN <- 0
-    FP <- 0
-    FN <- 0
-    
-    checkResults <- TRUE
-    
-    for(i in 1:5) {
-      dataset <- readData(paste(input[k],i,"tra.dat", sep=""), paste(input[k],i,"tst.dat", sep=""))
-      
-      test.X <- dataset$testSet[ , -dataset$n]
-      test.Y <- dataset$testSet[ , dataset$n]
-      
-      source("checkDataSet.R")
-      testResult <- checkDataSet(dataset$trainSet)
-     
-      
-      source("checkNumOfObjs.R")
-      numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
-                                  rare = choise[j, 3], outlier = choise[j, 4]) 
-      
-      if(numOfObjs == 0) {
-        checkResults <- FALSE
-        break
-      }
-      
-      data <- iOver(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
-                    safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
-      
-      testData = cbind(data$X,data$Y)
-      testResult <- checkDataSet(testData)
-      
-      N_Safe <- data$N_Safe
-      N_Borderline <- data$N_Borderline
-      N_Rare <- data$N_Rare
-      N_Outlier <- data$N_Outlier
-      N_Minority <- data$N_Minority
-      N_Majority <- data$N_Majority
-      IR <- N_Majority/N_Minority
-      
-      Nnew_Safe <- testResult$score$minority.safe
-      Nnew_Borderline <- testResult$score$minority.borderline
-      Nnew_Rare <- testResult$score$minority.rare
-      Nnew_Outlier <- testResult$score$minority.outlier
-      Nnew_Minority <- testResult$score$minority.count
-      Nnew_Majority <- testResult$score$majority.count
-      newIR <- Nnew_Majority/Nnew_Minority
-      
-      result <- mySVM(data = data, test.X = test.X)
-      
-      confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
-      aList = getROC_AUC(result, test.Y) 
-      auc = unlist(aList$auc)
-      
-      #Wykrec ROC i AUC
-      stack_x = unlist(aList$stack_x)
-      stack_y = unlist(aList$stack_y)
-      
-      plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
-      axis(1, seq(0.0,1.0,0.1))
-      axis(2, seq(0.0,1.0,0.1))
-      abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-      legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
-      
-      TP <- TP + confusionMatrix$TP
-      TP <- TP + confusionMatrix$TP
-      TN <- TN + confusionMatrix$TN
-      FP <- FP + confusionMatrix$FP
-      FN <- FN + confusionMatrix$FN
-    }
-    
-    if(checkResults) {
-      gmean <- computeGmean(tp = TP, fp = FP, fn = FN)
-      
-      write(paste(nameSet[k], choise[j, 1], choise[j, 2], choise[j, 3], choise[j, 4], N_Safe,Nnew_Safe,N_Borderline,Nnew_Borderline,N_Rare,Nnew_Rare,N_Outlier,Nnew_Outlier,N_Minority,Nnew_Minority,N_Majority,Nnew_Majority,IR,newIR,
-                  TP, TN, FP, FN, gmean, auc, sep=";"), file = output, append = TRUE)
-    } else {
-      write(paste(nameSet[k], choise[j, 1], choise[j, 2], choise[j, 3], choise[j, 4], 
-                  "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-", sep=";"), file = output, append = TRUE)
-    }
-  }
-  
-}
-output <- "Results/results_under_SVM.csv"
-
-write(writeTag, file = output, sep=";", append = TRUE)
+write(wData, file = output, sep=";", append = TRUE)
 
 for(k in 1:length(input)) {
   
@@ -419,12 +330,8 @@ for(k in 1:length(input)) {
       test.X <- dataset$testSet[ , -dataset$n]
       test.Y <- dataset$testSet[ , dataset$n]
       
-      source("checkDataSet.R")
       testResult <- checkDataSet(dataset$trainSet)
       
-     
-      
-      source("checkNumOfObjs.R")
       numOfObjs <- checkNumOfObjs(testResult = testResult, safe = choise[j, 1], borderline = choise[j, 2],
                                   rare = choise[j, 3], outlier = choise[j, 4]) 
       
@@ -433,49 +340,48 @@ for(k in 1:length(input)) {
         break
       }
       
-      data <- iUnder(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
-                     safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
-      
-      testData = cbind(data$X,data$Y)
-      testResult <- checkDataSet(testData)
-      
-      N_Safe <- data$N_Safe
-      N_Borderline <- data$N_Borderline
-      N_Rare <- data$N_Rare
-      N_Outlier <- data$N_Outlier
-      N_Minority <- data$N_Minority
-      N_Majority <- data$N_Majority
-      IR <- N_Majority/N_Minority
-      
-      Nnew_Safe <- testResult$score$minority.safe
-      Nnew_Borderline <- testResult$score$minority.borderline
-      Nnew_Rare <- testResult$score$minority.rare
-      Nnew_Outlier <- testResult$score$minority.outlier
-      Nnew_Minority <- testResult$score$minority.count
-      Nnew_Majority <- testResult$score$majority.count
-      newIR <- Nnew_Majority/Nnew_Minority
-      
-      result <- mySVM(data = data, test.X = test.X)
-      
-      confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
-      aList = getROC_AUC(result, test.Y) 
-      auc = unlist(aList$auc)
-      
-      #Wykrec ROC i AUC
-      stack_x = unlist(aList$stack_x)
-      stack_y = unlist(aList$stack_y)
-      
-      plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
-      axis(1, seq(0.0,1.0,0.1))
-      axis(2, seq(0.0,1.0,0.1))
-      abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
-      legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
-      
-      TP <- TP + confusionMatrix$TP
-      TP <- TP + confusionMatrix$TP
-      TN <- TN + confusionMatrix$TN
-      FP <- FP + confusionMatrix$FP
-      FN <- FN + confusionMatrix$FN
+      for(l in 1:10) {
+        data <- iUnder(X = testResult$X, Y = testResult$Y, minority.class = testResult$score$minority.class, types = testResult$types, 
+                       safe = choise[j, 1], borderline = choise[j, 2], rare = choise[j, 3], outlier = choise[j, 4])
+        
+        N_Safe <- data$N_Safe
+        N_Borderline <- data$N_Borderline
+        N_Rare <- data$N_Rare
+        N_Outlier <- data$N_Outlier
+        N_Minority <- data$N_Minority
+        N_Majority <- data$N_Majority
+        IR <- N_Majority/N_Minority
+        
+        Nnew_Safe <- testResult$score$minority.safe
+        Nnew_Borderline <- testResult$score$minority.borderline
+        Nnew_Rare <- testResult$score$minority.rare
+        Nnew_Outlier <- testResult$score$minority.outlier
+        Nnew_Minority <- testResult$score$minority.count
+        Nnew_Majority <- testResult$score$majority.count
+        newIR <- Nnew_Majority/Nnew_Minority
+        
+        result <- C50(data = data, test.X = test.X)
+        
+        confusionMatrix <- computeConfusionMatrix(result = result, Y = test.Y, minority.class = data$minority.class)
+        
+        aList = getROC_AUC(result, test.Y) 
+        auc = unlist(aList$auc)
+        
+        #Wykrec ROC i AUC
+        stack_x = unlist(aList$stack_x)
+        stack_y = unlist(aList$stack_y)
+        
+        plot(stack_x, stack_y, type = "l", col = "blue", xlab = "False Positive Rate", ylab = "True Positive Rate", main = "ROC")
+        axis(1, seq(0.0,1.0,0.1))
+        axis(2, seq(0.0,1.0,0.1))
+        abline(h=seq(0.0,1.0,0.1), v=seq(0.0,1.0,0.1), col="gray", lty=3)
+        legend(0.7, 0.3, sprintf("%3.3f",auc), lty=c(1,1), lwd=c(2.5,2.5), col="blue", title = "AUC")
+        
+        TP <- TP + confusionMatrix$TP
+        TN <- TN + confusionMatrix$TN
+        FP <- FP + confusionMatrix$FP
+        FN <- FN + confusionMatrix$FN
+      }
     }
     
     if(checkResults) {

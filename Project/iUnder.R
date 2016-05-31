@@ -29,11 +29,11 @@ iUnder <- function(X, Y, minority.class, types, safe, borderline, rare, outlier)
   }
   if(outlier){
     indexes <- c(indexes, which(min.types == 3))
-    N_Rare = length(which(min.types == 3))
+    N_Outlier = length(which(min.types == 3))
   }
   if(rare) {
     indexes <- c(indexes, which(min.types == 4))
-    N_Outlier = length(which(min.types == 4))
+    N_Rare = length(which(min.types == 4))
   }
   
   indexes <- indexes[-1]
